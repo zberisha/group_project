@@ -8,6 +8,7 @@ import RegisterForm from "./components/RegisterForm";
 import AddProduct from "./components/AddProduct";
 import ProductList from "./components/ProductList";
 import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute"; // Import it
 
 function App() {
   return (
@@ -18,14 +19,17 @@ function App() {
           <div className="flex-1">
             <Routes>
               <Route path="/" element={<HomeComponent />} />
-              <Route path="/login" element={<LoginForm />} />
-              <Route path="/register" element={<RegisterForm />} />
               
+              <Route element={<PublicRoute />}>
+                <Route path="/login" element={<LoginForm />} />
+                <Route path="/register" element={<RegisterForm />} />
+              </Route>
+
               <Route element={<PrivateRoute />}>
                 <Route path="/add" element={<AddProduct />} />
                 <Route path="/list/:userId" element={<ProductList />} />
               </Route>
-              
+
               <Route path="*" element={<HomeComponent />} />
             </Routes>
           </div>
