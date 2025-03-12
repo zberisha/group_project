@@ -47,9 +47,9 @@ const ProductList = () => {
                 <CardDescription>{product.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <p>Price: ${product.price}</p>
+                <p>Price: {product.price}ALL</p>
                 <p>Ingredients: {product.ingredients}</p>
-                <p>Calories: {product.calories}</p>
+                <p>Calories: {product.calories} </p>
                 {product.imageUrl && (
                   <img
                     src={product.imageUrl}
