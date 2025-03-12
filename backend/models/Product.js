@@ -13,6 +13,11 @@ const ProductSchema = new mongoose.Schema(
     ingredients: { type: String },
     calories: { type: Number },
     imageUrl: { type: String },
+    category: {
+      type: String,
+      required: true,
+      enum: ["Meat", "Pizza", "Bakery", "Burger", "Sea Food"],
+    },
   },
   { timestamps: true }
 );

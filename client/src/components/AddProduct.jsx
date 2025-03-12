@@ -22,11 +22,11 @@ const AddProduct = () => {
     ingredients: "",
     calories: "",
     imageUrl: "",
+    category: "Meat", // Updated default category
   });
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
 
-  // Get business id from AuthService
   const businessId = getUserId();
 
   const handleChange = (e) => {
@@ -40,7 +40,6 @@ const AddProduct = () => {
     setMessage(null);
 
     try {
-      // Include businessId in the payload
       const payload = { ...formData, businessId };
       const token = getToken();
       const response = await axios.post(
@@ -49,18 +48,25 @@ const AddProduct = () => {
         {
           headers: { 
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}` 
+            Authorization: `Bearer ${token}`,
           },
         }
       );
       setMessage("Product added successfully");
-      // Redirect to product list page after successful addition
       navigate(`/list/${businessId}`);
     } catch (err) {
       console.error("Add Product error:", err.response?.data || err.message);
       setError(err.response?.data?.error || "Failed to add product");
     }
   };
+
+  const categoryOptions = [
+    { value: "Meat", label: "Meat 🥩" },
+    { value: "Pizza", label: "Pizza 🍕" },
+    { value: "Bakery", label: "Bakery 🍩" },
+    { value: "Burger", label: "Burger 🍔" },
+    { value: "Sea Food", label: "Sea Food 🦐" },
+  ];
 
   return (
     <div className="max-w-md mx-auto p-4">
@@ -135,6 +141,23 @@ const AddProduct = () => {
                 onChange={handleChange}
                 placeholder="http://example.com/image.jpg"
               />
+            </div>
+            {/* Updated Category Dropdown */}
+            <div className="grid gap-2">
+              <Label htmlFor="category">Category</Label>
+              <select
+                id="category"
+                name="category"
+                value={formData.category}
+                onChange={handleChange}
+                className="border border-gray-300 rounded p-2"
+              >
+                {categoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
             <Button type="submit" className="w-full">
               Add Product

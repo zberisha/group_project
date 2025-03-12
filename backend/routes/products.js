@@ -4,11 +4,14 @@ const Product = require("../models/Product");
 const verifyToken = require("../middleware/auth");
 
 router.post("/", verifyToken, async (req, res) => {
+  // Get the business id from the token
   const businessId = req.user.id;
-  const { name, description, price, ingredients, calories, imageUrl } = req.body;
+  // Destructure all fields including category
+  const { name, description, price, ingredients, calories, imageUrl, category } = req.body;
   
-  if (!name || !price) {
-    return res.status(400).json({ error: "Name and price are required" });
+  // Basic validation for required fields
+  if (!name || !price || !category) {
+    return res.status(400).json({ error: "Name, price and category are required" });
   }
 
   try {
@@ -20,6 +23,7 @@ router.post("/", verifyToken, async (req, res) => {
       ingredients,
       calories,
       imageUrl,
+      category, // include category here
     });
     await newProduct.save();
     res.status(201).json({ message: "Product created", product: newProduct });
