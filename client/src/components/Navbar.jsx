@@ -69,7 +69,7 @@ const Navbar = () => {
               href="/"
               className="flex items-center space-x-2 text-xl font-bold"
             >
-              Digital Menu
+              DigiMenu
             </a>
           </div>
 
