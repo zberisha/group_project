@@ -5,6 +5,8 @@ import Navbar from "./components/Navbar";
 import HomeComponent from "./components/HomeComponent";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
+import AddProduct from "./components/AddProduct";
+import ProductList from "./components/ProductList";
 
 function App() {
   return (
@@ -14,9 +16,12 @@ function App() {
           <Navbar />
           <div className="flex-1">
             <Routes>
-              <Route path="*" element={<HomeComponent />} />
+              <Route path="/" element={<HomeComponent />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
+              <Route path="/add" element={<AddProduct />} />
+              <Route path="/list/:userId" element={<ProductList />} />
+              <Route path="*" element={<HomeComponent />} />
             </Routes>
           </div>
         </div>
