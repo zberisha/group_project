@@ -8,8 +8,8 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { getUserId, getToken } from "../services/AuthService";
+import QRCodeGenerator from "./QRCodeGenerator";
 
-// 1. Define your icon categories here
 const categoryIcons = [
   { label: "All", icon: "🔎" },
   { label: "Meat", icon: "🥩" },
@@ -47,7 +47,6 @@ const ProductList = () => {
     fetchProducts();
   }, [businessId]);
 
-  // 2. Filter logic based on category and search query
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
       categoryFilter === "All" || product.category === categoryFilter;
@@ -59,10 +58,11 @@ const ProductList = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-4">
+      <QRCodeGenerator />
+
       <h2 className="text-xl font-bold mb-4">Products</h2>
       {error && <p className="text-red-500">{error}</p>}
 
-      {/* 3. Category Icon Buttons */}
       <div className="flex flex-wrap items-center gap-4 mb-4">
         {categoryIcons.map((cat) => (
           <button
@@ -82,7 +82,6 @@ const ProductList = () => {
         ))}
       </div>
 
-      {/* 4. Search Bar */}
       <div className="mb-4">
         <input
           type="text"
@@ -93,27 +92,23 @@ const ProductList = () => {
         />
       </div>
 
-      {/* 5. Display Filtered Products */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <Card key={product._id}>
-              <CardHeader>
-                <CardTitle>{product.name}</CardTitle>
-                <CardDescription>{product.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
+          filteredProducts.map((product) => {
+            // Find matching icon for the product's category
+            const catObj = categoryIcons.find((cat) => cat.label === product.category);
+            const categoryDisplay = catObj ? `${catObj.icon} ${product.category}` : product.category;
+            return (
+              <Card key={product._id} className="hover:shadow-xl transition-shadow">
+                <CardHeader>
+                  <CardTitle>{product.name}</CardTitle>
+                  <CardDescription>{product.description}</CardDescription>
+                </CardHeader>
+                <CardContent>
                   <p>Price: {product.price} ALL</p>
                   <p>
                     Category:{" "}
-                    {(() => {
-                      const categoryIcon = categoryIcons.find(
-                        (cat) => cat.label === product.category
-                      );
-                      return categoryIcon
-                        ? `${categoryIcon.icon} ${product.category}`
-                        : product.category;
-                    })()}
+                    {categoryDisplay}
                   </p>
                   <p>Ingredients: {product.ingredients}</p>
                   <p>Calories: {product.calories}</p>
@@ -125,9 +120,9 @@ const ProductList = () => {
                     />
                   )}
                 </CardContent>
-
-            </Card>
-          ))
+              </Card>
+            );
+          })
         ) : (
           <p>No products found. Try changing the filters or search query.</p>
         )}
